@@ -7,7 +7,7 @@ public class Bean implements Serializable {
     private static final long serialVersionUID = 1837268034749038237L;
     private String id;
     private String classpath;
-    private Map<Object,Object> propertyMap;
+    private Map<String,Object> propertyMap;
 
     public Bean(String id, String classpath, Map propertyMap) {
         this.id = id;

@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class Property implements Serializable {
     private static final long serialVersionUID = 7756687305108139718L;
     private String name;
-    private String value;
+    private Object value;
 
     public Property() {
     }
 
-    public Property(String name, String value) {
+    public Property(String name, Object value) {
         this.name = name;
         this.value = value;
     }
@@ -23,11 +23,11 @@ public class Property implements Serializable {
         this.name = name;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

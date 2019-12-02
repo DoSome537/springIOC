@@ -6,9 +6,8 @@ import org.dom4j.io.SAXReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,7 @@ public class SprIOC {
                 Map<Object,Object>propertyMap = new HashMap();
                 for (Element el : propertyEleList) {
                     String name = el.attributeValue("name");
-                    String value  = el.attributeValue("value");
+                    String value = el.attributeValue("value");
                     System.out.println("InMapname="+name);
                     System.out.println("InMapvalue="+value);
                     propertyMap.put(name,value);
@@ -77,7 +76,7 @@ public class SprIOC {
         }
         return null;
     }
-    //得到要创建对象的构造器
+   /* //得到要创建对象的构造器
     public Constructor getConstructor(String className){
         try {
             Class<?> tc = Class.forName(className);
@@ -100,33 +99,44 @@ public class SprIOC {
         return null;
     }
 
+    public Method[] getMethod(String className){
+        try {
+            Class tc = Class.forName(className);
+            Method[] methods = tc.getMethods();
+            return methods;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }*/
+
     public Object getBean(String id){
         Bean b = getCreateBean(id);
         String className = b.getClasspath();
-        System.out.println("classpath:"+className);
-        Constructor constructor = getConstructor(className);
-        Field[] fields = getField(className);
-        Map propertyMap<Object,Object> = b.getPropertyMap();
-
+        Map<String,Object> propertyMap = b.getPropertyMap();
         try {
-             Object obj =  constructor.newInstance();
-            for(int i = 0;i < fields.length;i++){
+            Class tc = Class.forName(className);
+            Object obj = tc.newInstance();
+            Field[] fields = tc.getDeclaredFields();
+            Method[] methods = tc.getMethods();
+            for (int i = 0;i < fields.length;i++){
                 fields[i].setAccessible(true);
-                System.out.println("field"+i+":"+fields[i].getName());
+                System.out.println(fields[i].getName());
+                System.out.println(fields[i].getGenericType());
                 for (Map.Entry entry : propertyMap.entrySet()) {
-                    System.out.println("name:"+entry.getKey());
-                    System.out.println("value:"+entry.getValue());
                     if(entry.getKey().equals(fields[i].getName())){
-                        fields[i].set(obj,entry.getValue());
+                        Method method = tc.getMethod("set" + fields[i].getName().substring(0, 1).toUpperCase() + fields[i].getName().substring(1), (Class<?>) fields[i].getGenericType());
+                        if (fields[i].getGenericType().toString().contains("int")){
+                            method.invoke(obj,Integer.parseInt((String) entry.getValue()));
+                        }
+                        if (fields[i].getGenericType().toString().contains("String")){
+                            method.invoke(obj,entry.getValue());
+                        }
                     }
                 }
             }
             return obj;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

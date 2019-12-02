@@ -1,11 +1,11 @@
 <beans>
   <bean id="person" class="cn.xdl.testbean.Person">
-    <property name="name" value="zhangfei"> </property>
-    <property name="age" value="20"> </property>
+    <property name="nam" value="zhangfei"> </property>
+    <property name="ag" value="20"> </property>
   </bean>
 
   <bean id="student" class="cn.xdl.testbean.Student">
-    <property name="nam" value="liubei"></property>
-    <property name="ag" value="30"></property>
+    <property name="name" value="liubei"></property>
+    <property name="age" value="30"></property>
   </bean>
 </beans>

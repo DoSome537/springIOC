@@ -1,33 +1,38 @@
 package cn.xdl.testbean;
 
 public class Person {
-    private String name;
-    private String age;
+    private String nam;
+    private String ag;
 
     public Person() {
     }
 
-    public String getName() {
-        return name;
+    public Person(String nam, String ag) {
+        this.nam = nam;
+        this.ag = ag;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getNam() {
+        return nam;
     }
 
-    public String getAge() {
-        return age;
+    public void setNam(String nam) {
+        this.nam = nam;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public String getAg() {
+        return ag;
+    }
+
+    public void setAg(String ag) {
+        this.ag = ag;
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "name='" + name + '\'' +
-                ", age='" + age + '\'' +
+                "nam='" + nam + '\'' +
+                ", ag='" + ag + '\'' +
                 '}';
     }
 }
